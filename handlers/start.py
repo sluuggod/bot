@@ -19,10 +19,16 @@ async def quiz_1(message: types.Message):
         "Next Victorine",
         callback_data="button_call_1"
     )
-    markup.add(button_call_1)
+    button_call_2 = InlineKeyboardButton(
+        "Next Victorine",
+        callback_data="button_call_1"
+    )
+
+
+    # markup.add(button_call_1)
     markup.row(
-        "button_call_1",
-        "button_call_2"
+        button_call_1,
+        button_call_2
     )
 
     question = "Who Invented Python"
