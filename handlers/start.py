@@ -70,3 +70,4 @@ def register_start_handlers(dp: Dispatcher):
     dp.register_message_handler(start_button, commands=["start"])
     dp.register_message_handler(quiz_1, commands=["quiz"])
     dp.register_callback_query_handler(quiz_2, lambda call: call.data == "button_call_1")
+      #fibafwpu
