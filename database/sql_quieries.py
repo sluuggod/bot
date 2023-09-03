@@ -1,13 +1,75 @@
-create_user_table_query = """
+CREATE_USER_TABLE_QUERY = """
         CREATE TABLE IF NOT EXISTS telegram_users
         (ID INTEGER PRIMARY KEY,
         TELEGRAM_ID INTEGER,
-        USERNAME CHAR(50),
-        FIRST_NAME CHAR (50),
-        LAST_NAME CHAR(50)
+        USERNAME CHAR(50),        
+        FIRST_NAME CHAR(50),        
+        LAST_NAME CHAR(50),
+        REFERENCE_LINK TEXT NULL,
+        UNIQUE (TELEGRAM_ID)
         )
 """
 
-start_insert_user_query = """INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?)"""
+CREATE_REFERENCE_USERS_TABLE_QUERY = """
+        CREATE TABLE IF NOT EXISTS reference_users
+        (ID INTEGER PRIMARY KEY,
+        OWNER_TELEGRAM_ID INTEGER,
+        REFERRAL_TELEGRAM_ID INTEGER      
+        )
+"""
 
+CREATE_USER_FORM_QUERY = """
+        CREATE TABLE IF NOT EXISTS user_form
+        (ID INTEGER PRIMARY KEY,
+        TELEGRAM_ID INTEGER,
+        NICKNAME CHAR(50),
+        AGE INTEGER,
+        BIO TEXT,
+        PHOTO TEXT,
+        UNIQUE (TELEGRAM_ID)
+        )
 
+"""
+
+CREATE_FORM_LIKE_QUERY = """
+        CREATE TABLE IF NOT EXISTS form_like
+        (ID INTEGER PRIMARY KEY,
+        OWNER_TELEGRAM_ID INTEGER,
+        LIKER_TELEGRAM_ID INTEGER
+        )
+
+"""
+START_INSERT_USER_QUERY = """INSERT OR IGNORE INTO telegram_users VALUES (?,?,?,?,?,?)"""
+
+SELECT_USER_QUERY = """SELECT telegram_id, username, first_name FROM telegram_users"""
+
+INSERT_USER_FORM_QUERY = """INSERT OR IGNORE INTO user_form VALUES (?,?,?,?,?,?)"""
+
+SELECT_USER_FORM_BY_TELEGRAM_ID_QUERY = """SELECT * FROM user_form WHERE TELEGRAM_ID = ?"""
+
+SELECT_USER_FORM_QUERY = """SELECT * FROM user_form"""
+
+INSERT_LIKE_FORM_QUERY = """INSERT OR IGNORE INTO form_like VALUES (?,?,?)"""
+
+SELECT_LIKED_FORM_QUERY = """
+SELECT * FROM form_like WHERE OWNER_TELEGRAM_ID = ? AND LIKER_TELEGRAM_ID = ?"""
+
+UPDATE_USER_FORM_QUERY = """
+UPDATE user_form SET NICKNAME = ?, AGE = ?, BIO = ?, PHOTO = ? WHERE TELEGRAM_ID = ?
+"""
+
+DELETE_USER_FORM_QUERY = """
+DELETE FROM user_form WHERE TELEGRAM_ID = ?
+"""
+
+SELECT_EXISTED_LINK_QUERY = """
+SELECT REFERENCE_LINK FROM telegram_users WHERE TELEGRAM_ID = ?"""
+
+UPDATE_USER_BY_LINK_QUERY = """
+UPDATE telegram_users SET REFERENCE_LINK = ? WHERE TELEGRAM_ID = ?
+"""
+
+SELECT_LINK_OWNER_QUERY = """
+SELECT TELEGRAM_ID FROM telegram_users WHERE REFERENCE_LINK = ?"""
+
+INSERT_REFERENCE_USERS_QUERY = """INSERT OR IGNORE INTO reference_users VALUES (?,?,?)"""
